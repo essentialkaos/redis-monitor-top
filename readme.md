@@ -70,10 +70,10 @@ Examples
 
 ### Build Status
 
-| Repository | Status |
+| Branch | Status |
 |------------|--------|
-| Stable | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
-| Unstable | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=develop)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
+| `master` | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
+| `develop` | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=develop)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
 
 ### License
 
