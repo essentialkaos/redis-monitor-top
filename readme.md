@@ -84,5 +84,5 @@ Examples
 [EKOL](https://essentialkaos.com/ekol)
 
 <p align="center">
-<img width="400" height="400" src="https://gh.kaos.io/ekgh.svg"/>
+<a href="https://essentialkaos.com"><img src="https://gh.kaos.io/ekgh.svg"/></a>
 </p>
