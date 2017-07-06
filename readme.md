@@ -2,6 +2,10 @@
 
 Tiny Redis client for aggregating stats from MONITOR flow.
 
+### Usage demo
+
+[![demo](https://gh.kaos.io/redis-monitor-top-100.gif)](#usage-demo)
+
 ### Installation
 
 #### From source
@@ -64,7 +68,7 @@ Examples
   Start monitoring instance on 192.168.0.123:6821 with 15 second timeout
 
   redis-monitor-top -h 192.168.0.123 -p 6821 -i 30 MY_MONITOR
-  Start monitoring instance on 192.168.0.123:6821 with 30 second interval with renamed MONITOR command
+  Start monitoring instance on 192.168.0.123:6821 with 30 second interval and renamed MONITOR command
 
 ```
 
