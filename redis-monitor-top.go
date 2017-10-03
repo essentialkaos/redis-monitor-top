@@ -1,3 +1,5 @@
+// +build linux
+
 package main
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -20,6 +22,7 @@ import (
 	"pkg.re/essentialkaos/ek.v9/fmtutil"
 	"pkg.re/essentialkaos/ek.v9/fmtutil/table"
 	"pkg.re/essentialkaos/ek.v9/options"
+	"pkg.re/essentialkaos/ek.v9/system/procname"
 	"pkg.re/essentialkaos/ek.v9/timeutil"
 	"pkg.re/essentialkaos/ek.v9/usage"
 )
@@ -28,7 +31,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.0.0"
+	VER  = "1.1.0"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -116,11 +119,17 @@ func main() {
 
 	cmd := "MONITOR"
 
-	if len(args) != 0 {
+	if len(args) != 0 && strings.ToUpper(args[0]) != "MONITOR" {
 		cmd = args[0]
+		maskCommand(cmd)
 	}
 
 	start(cmd)
+}
+
+// maskCommand mask command in process tree
+func maskCommand(cmd string) {
+	procname.Replace(cmd, strings.Repeat("*", len(cmd)))
 }
 
 // start connect to redis and starts monitor flow processing
