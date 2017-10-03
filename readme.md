@@ -44,7 +44,7 @@ go get -u github.com/essentialkaos/redis-monitor-top
 
 #### Prebuilt binaries
 
-You can download prebuilt binaries for Linux and OS X from [EK Apps Repository](https://apps.kaos.io/redis-monitor-top/latest).
+You can download prebuilt binaries for Linux from [EK Apps Repository](https://apps.kaos.io/redis-monitor-top/latest).
 
 ### Usage
 
