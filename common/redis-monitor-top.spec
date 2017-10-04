@@ -10,7 +10,7 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.1.0
+Version:         1.2.0
 Release:         0%{?dist}
 Group:           Applications/System
 License:         EKOL
@@ -57,6 +57,10 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Oct 03 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Fixed bug with processing custom MONITOR command name
+- Improved float output in RPS
+
 * Tue Oct 03 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - Mask non-default MONITOR command name in process tree
 

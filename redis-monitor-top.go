@@ -21,7 +21,9 @@ import (
 	"pkg.re/essentialkaos/ek.v9/fmtc"
 	"pkg.re/essentialkaos/ek.v9/fmtutil"
 	"pkg.re/essentialkaos/ek.v9/fmtutil/table"
+	"pkg.re/essentialkaos/ek.v9/mathutil"
 	"pkg.re/essentialkaos/ek.v9/options"
+	"pkg.re/essentialkaos/ek.v9/strutil"
 	"pkg.re/essentialkaos/ek.v9/system/procname"
 	"pkg.re/essentialkaos/ek.v9/timeutil"
 	"pkg.re/essentialkaos/ek.v9/usage"
@@ -31,7 +33,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.1.0"
+	VER  = "1.2.0"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -119,9 +121,9 @@ func main() {
 
 	cmd := "MONITOR"
 
-	if len(args) != 0 && strings.ToUpper(args[0]) != "MONITOR" {
-		cmd = args[0]
-		maskCommand(cmd)
+	if len(args) != 0 && strings.ToUpper(args[0]) != cmd {
+		cmd = strutil.Copy(args[0])
+		maskCommand(args[0])
 	}
 
 	start(cmd)
@@ -129,7 +131,8 @@ func main() {
 
 // maskCommand mask command in process tree
 func maskCommand(cmd string) {
-	procname.Replace(cmd, strings.Repeat("*", len(cmd)))
+	cmdLen := mathutil.Max(len(cmd), 16)
+	procname.Replace(cmd, strings.Repeat("*", cmdLen))
 }
 
 // start connect to redis and starts monitor flow processing
@@ -248,14 +251,14 @@ func renderStats(t *table.Table) {
 			t.Print(
 				timeutil.Format(now, "%Y/%m/%d %H:%M:%S"),
 				fmtutil.PrettyNum(info.Count),
-				fmtutil.PrettyNum(float64(info.Count)/interval),
+				fmtutil.PrettyNum(formatFloat(float64(info.Count)/interval)),
 				strings.ToUpper(info.Name),
 			)
 		} else {
 			t.Print(
 				" ",
 				fmtutil.PrettyNum(info.Count),
-				fmtutil.PrettyNum(float64(info.Count)/interval),
+				fmtutil.PrettyNum(formatFloat(float64(info.Count)/interval)),
 				strings.ToUpper(info.Name),
 			)
 		}
@@ -284,6 +287,20 @@ func extractCommandName(command string) string {
 	}
 
 	return command[cmdStart : cmdStart+cmdEnd]
+}
+
+// formatFloat format floating numbers
+func formatFloat(f float64) float64 {
+	switch {
+	case f > 500:
+		return mathutil.Round(f, 0)
+	case f > 50:
+		return mathutil.Round(f, 1)
+	case f > 0.3:
+		return mathutil.Round(f, 2)
+	}
+
+	return f
 }
 
 // printErrorAndExit print error message and exit from utility
