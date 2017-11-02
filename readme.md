@@ -1,4 +1,4 @@
-## Redis Monitor Top [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) [![Go Report Card](https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top)](https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top) [![License](https://gh.kaos.io/ekol.svg)](https://essentialkaos.com/ekol)
+## Redis Monitor Top [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) [![Go Report Card](https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top)](https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top) [![codebeat badge](https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7)](https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master) [![License](https://gh.kaos.io/ekol.svg)](https://essentialkaos.com/ekol)
 
 Tiny Redis client for aggregating stats from MONITOR flow.
 
