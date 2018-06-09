@@ -1,22 +1,31 @@
-## Redis Monitor Top [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) [![Go Report Card](https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top)](https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top) [![codebeat badge](https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7)](https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master) [![License](https://gh.kaos.io/ekol.svg)](https://essentialkaos.com/ekol)
+<p align="center"><a href="#readme"><img src="https://gh.kaos.st/redis-monitor-top.svg"/></a></p>
+
+<p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#build-status">Build Status</a> • <a href="#license">License</a></p>
+
+<p align="center">
+  <a href="https://travis-ci.org/essentialkaos/redis-monitor-top"><img src="https://travis-ci.org/essentialkaos/redis-monitor-top.svg"></a>
+  <a href="https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top"><img src="https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top"></a>
+  <a href="https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master"><img alt="codebeat badge" src="https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7" /></a>
+  <a href="https://essentialkaos.com/ekol"><img src="https://gh.kaos.st/ekol.svg"></a>
+</p>
 
 Tiny Redis client for aggregating stats from MONITOR flow.
 
 ### Usage demo
 
-[![demo](https://gh.kaos.io/redis-monitor-top-100.gif)](#usage-demo)
+[![demo](https://gh.kaos.st/redis-monitor-top-100.gif)](#usage-demo)
 
 ### Installation
 
 #### From source
 
-Before the initial install allows git to use redirects for [pkg.re](https://github.com/essentialkaos/pkgre) service (reason why you should do this described [here](https://github.com/essentialkaos/pkgre#git-support)):
+Before the initial install allows git to use redirects for [pkg.re](https://github.com/essentialkaos/pkgre) service (_reason why you should do this described [here](https://github.com/essentialkaos/pkgre#git-support)_):
 
 ```
 git config --global http.https://pkg.re.followRedirects true
 ```
 
-To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.7+ workspace ([instructions](https://golang.org/doc/install)), then:
+To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.7+ workspace (_[instructions](https://golang.org/doc/install)_), then:
 
 ```
 go get github.com/essentialkaos/redis-monitor-top
@@ -31,20 +40,20 @@ go get -u github.com/essentialkaos/redis-monitor-top
 #### From ESSENTIAL KAOS Public repo for RHEL6/CentOS6
 
 ```bash
-[sudo] yum install -y https://yum.kaos.io/6/release/x86_64/kaos-repo-8.0-0.el6.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/6/release/x86_64/kaos-repo-9.1-0.el6.noarch.rpm
 [sudo] yum install redis-monitor-top
 ```
 
 #### From ESSENTIAL KAOS Public repo for RHEL7/CentOS7
 
 ```bash
-[sudo] yum install -y https://yum.kaos.io/7/release/x86_64/kaos-repo-8.0-0.el7.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.1-0.el7.noarch.rpm
 [sudo] yum install redis-monitor-top
 ```
 
 #### Prebuilt binaries
 
-You can download prebuilt binaries for Linux from [EK Apps Repository](https://apps.kaos.io/redis-monitor-top/latest).
+You can download prebuilt binaries for Linux from [EK Apps Repository](https://apps.kaos.st/redis-monitor-top/latest).
 
 ### Usage
 
@@ -83,4 +92,4 @@ Examples
 
 [EKOL](https://essentialkaos.com/ekol)
 
-<p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.io/ekgh.svg"/></a></p>
+<p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.st/ekgh.svg"/></a></p>
