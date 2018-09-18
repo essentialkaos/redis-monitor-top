@@ -33,7 +33,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.2.0"
+	VER  = "1.2.1"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -213,9 +213,7 @@ func printStats() {
 	t.SetSizes(20, 10, 10)
 	t.SetAlignments(table.ALIGN_RIGHT, table.ALIGN_RIGHT, table.ALIGN_RIGHT)
 
-	for {
-		time.Sleep(time.Millisecond * 250)
-
+	for range time.NewTicker(time.Millisecond * 250).C {
 		if time.Since(last) >= interval {
 			renderStats(t)
 			last = time.Now()
