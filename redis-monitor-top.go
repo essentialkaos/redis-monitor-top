@@ -33,7 +33,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.2.1"
+	VER  = "1.2.2"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -76,7 +76,7 @@ type Stats struct {
 
 // optMap is map with options
 var optMap = options.Map{
-	OPT_HOST:     {Value: "127.0.0.1"},
+	OPT_HOST:     {Type: options.MIXED, Value: "127.0.0.1"},
 	OPT_PORT:     {Value: "6379"},
 	OPT_TIMEOUT:  {Type: options.INT, Value: 3, Min: 1, Max: 300},
 	OPT_AUTH:     {},
@@ -114,7 +114,7 @@ func main() {
 		return
 	}
 
-	if options.GetB(OPT_HELP) {
+	if options.GetB(OPT_HELP) || options.GetS(OPT_HOST) == "true" {
 		showUsage()
 		return
 	}
