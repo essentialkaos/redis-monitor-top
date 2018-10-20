@@ -10,7 +10,7 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.2.1
+Version:         1.2.2
 Release:         0%{?dist}
 Group:           Applications/System
 License:         EKOL
@@ -20,7 +20,7 @@ Source0:         https://source.kaos.io/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.8
+BuildRequires:   golang >= 1.11
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -57,6 +57,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 20 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- Show usage info if '-h' passed without any value
+
 * Wed Sep 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
 - Code refactoring
 
