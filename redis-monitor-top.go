@@ -4,13 +4,14 @@ package main
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 //                                                                                    //
-//                     Copyright (c) 2009-2018 ESSENTIAL KAOS                         //
+//                     Copyright (c) 2009-2019 ESSENTIAL KAOS                         //
 //        Essential Kaos Open Source License <https://essentialkaos.com/ekol>         //
 //                                                                                    //
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 import (
 	"bufio"
+	"fmt"
 	"net"
 	"os"
 	"runtime"
@@ -18,22 +19,25 @@ import (
 	"strings"
 	"time"
 
-	"pkg.re/essentialkaos/ek.v9/fmtc"
-	"pkg.re/essentialkaos/ek.v9/fmtutil"
-	"pkg.re/essentialkaos/ek.v9/fmtutil/table"
-	"pkg.re/essentialkaos/ek.v9/mathutil"
-	"pkg.re/essentialkaos/ek.v9/options"
-	"pkg.re/essentialkaos/ek.v9/strutil"
-	"pkg.re/essentialkaos/ek.v9/system/procname"
-	"pkg.re/essentialkaos/ek.v9/timeutil"
-	"pkg.re/essentialkaos/ek.v9/usage"
+	"pkg.re/essentialkaos/ek.v10/fmtc"
+	"pkg.re/essentialkaos/ek.v10/fmtutil"
+	"pkg.re/essentialkaos/ek.v10/fmtutil/table"
+	"pkg.re/essentialkaos/ek.v10/mathutil"
+	"pkg.re/essentialkaos/ek.v10/options"
+	"pkg.re/essentialkaos/ek.v10/strutil"
+	"pkg.re/essentialkaos/ek.v10/system/procname"
+	"pkg.re/essentialkaos/ek.v10/timeutil"
+	"pkg.re/essentialkaos/ek.v10/usage"
+	"pkg.re/essentialkaos/ek.v10/usage/completion/bash"
+	"pkg.re/essentialkaos/ek.v10/usage/completion/fish"
+	"pkg.re/essentialkaos/ek.v10/usage/completion/zsh"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.2.2"
+	VER  = "1.3.0"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -46,6 +50,8 @@ const (
 	OPT_NO_COLOR = "nc:no-color"
 	OPT_HELP     = "help"
 	OPT_VER      = "v:version"
+
+	OPT_COMPLETION = "completion"
 )
 
 const MAX_COMMANDS = 128
@@ -84,6 +90,8 @@ var optMap = options.Map{
 	OPT_NO_COLOR: {Type: options.BOOL},
 	OPT_HELP:     {Type: options.BOOL, Alias: "u:usage"},
 	OPT_VER:      {Type: options.BOOL, Alias: "ver"},
+
+	OPT_COMPLETION: {},
 }
 
 var conn net.Conn
@@ -103,6 +111,10 @@ func main() {
 		}
 
 		os.Exit(1)
+	}
+
+	if options.Has(OPT_COMPLETION) {
+		genCompletion()
 	}
 
 	if options.GetB(OPT_NO_COLOR) {
@@ -361,6 +373,11 @@ func (s *Stats) Increment(command string) {
 
 // showUsage print usage info
 func showUsage() {
+	genUsage().Render()
+}
+
+// genUsage generates usage info
+func genUsage() *usage.Info {
 	info := usage.NewInfo("", "command")
 
 	info.AddOption(OPT_HOST, "Server hostname {s-}(127.0.0.1 by default){!}", "ip/host")
@@ -382,7 +399,25 @@ func showUsage() {
 		"Start monitoring instance on 192.168.0.123:6821 with 30 second interval and renamed MONITOR command",
 	)
 
-	info.Render()
+	return info
+}
+
+// genCompletion generates completion for different shells
+func genCompletion() {
+	info := genUsage()
+
+	switch options.GetS(OPT_COMPLETION) {
+	case "bash":
+		fmt.Printf(bash.Generate(info, "redis-monitor-top"))
+	case "fish":
+		fmt.Printf(fish.Generate(info, "redis-monitor-top"))
+	case "zsh":
+		fmt.Printf(zsh.Generate(info, optMap, "redis-monitor-top"))
+	default:
+		os.Exit(1)
+	}
+
+	os.Exit(0)
 }
 
 // showAbout print info about version
