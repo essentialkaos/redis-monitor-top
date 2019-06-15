@@ -1,13 +1,15 @@
 <p align="center"><a href="#readme"><img src="https://gh.kaos.st/redis-monitor-top.svg"/></a></p>
 
-<p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#build-status">Build Status</a> • <a href="#license">License</a></p>
-
 <p align="center">
   <a href="https://travis-ci.org/essentialkaos/redis-monitor-top"><img src="https://travis-ci.org/essentialkaos/redis-monitor-top.svg"></a>
   <a href="https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top"><img src="https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top"></a>
   <a href="https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master"><img alt="codebeat badge" src="https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7" /></a>
   <a href="https://essentialkaos.com/ekol"><img src="https://gh.kaos.st/ekol.svg"></a>
 </p>
+
+<p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#build-status">Build Status</a> • <a href="#license">License</a></p>
+
+<br/>
 
 Tiny Redis client for aggregating stats from MONITOR flow.
 
