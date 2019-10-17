@@ -27,7 +27,7 @@ Before the initial install allows git to use redirects for [pkg.re](https://gith
 git config --global http.https://pkg.re.followRedirects true
 ```
 
-To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.10+ workspace (_[instructions](https://golang.org/doc/install)_), then:
+To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.11+ workspace (_[instructions](https://golang.org/doc/install)_), then:
 
 ```
 go get github.com/essentialkaos/redis-monitor-top
@@ -56,6 +56,12 @@ go get -u github.com/essentialkaos/redis-monitor-top
 #### Prebuilt binaries
 
 You can download prebuilt binaries for Linux from [EK Apps Repository](https://apps.kaos.st/redis-monitor-top/latest).
+
+To install the latest prebuilt version, do:
+
+```bash
+bash <(curl -fsSL https://apps.kaos.st/get) redis-monitor-top
+```
 
 ### Usage
 
