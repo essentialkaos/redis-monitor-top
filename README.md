@@ -1,7 +1,7 @@
 <p align="center"><a href="#readme"><img src="https://gh.kaos.st/redis-monitor-top.svg"/></a></p>
 
 <p align="center">
-  <a href="https://travis-ci.org/essentialkaos/redis-monitor-top"><img src="https://travis-ci.org/essentialkaos/redis-monitor-top.svg"></a>
+  <a href="https://travis-ci.com/essentialkaos/redis-monitor-top"><img src="https://travis-ci.com/essentialkaos/redis-monitor-top.svg"></a>
   <a href="https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top"><img src="https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top"></a>
   <a href="https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master"><img alt="codebeat badge" src="https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7" /></a>
   <a href="https://essentialkaos.com/ekol"><img src="https://gh.kaos.st/ekol.svg"></a>
@@ -93,8 +93,8 @@ Examples
 
 | Branch | Status |
 |--------|--------|
-| `master` | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
-| `develop` | [![Build Status](https://travis-ci.org/essentialkaos/redis-monitor-top.svg?branch=develop)](https://travis-ci.org/essentialkaos/redis-monitor-top) |
+| `master` | [![Build Status](https://travis-ci.com/essentialkaos/redis-monitor-top.svg?branch=master)](https://travis-ci.com/essentialkaos/redis-monitor-top) |
+| `develop` | [![Build Status](https://travis-ci.com/essentialkaos/redis-monitor-top.svg?branch=develop)](https://travis-ci.com/essentialkaos/redis-monitor-top) |
 
 ### License
 
