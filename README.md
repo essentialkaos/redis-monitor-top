@@ -5,7 +5,7 @@
   <a href="https://github.com/essentialkaos/redis-monitor-top/actions?query=workflow%3ACodeQL"><img src="https://github.com/essentialkaos/redis-monitor-top/workflows/CodeQL/badge.svg" /></a>
   <a href="https://goreportcard.com/report/github.com/essentialkaos/redis-monitor-top"><img src="https://goreportcard.com/badge/github.com/essentialkaos/redis-monitor-top"></a>
   <a href="https://codebeat.co/projects/github-com-essentialkaos-redis-monitor-top-master"><img alt="codebeat badge" src="https://codebeat.co/badges/98c9f6ab-999c-498c-980f-44859b18aae7" /></a>
-  <a href="https://essentialkaos.com/ekol"><img src="https://gh.kaos.st/ekol.svg"></a>
+  <a href="#license"><img src="https://gh.kaos.st/apache2.svg"></a>
 </p>
 
 <p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#build-status">Build Status</a> • <a href="#license">License</a></p>
@@ -92,6 +92,6 @@ Examples
 
 ### License
 
-[EKOL](https://essentialkaos.com/ekol)
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 <p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.st/ekgh.svg"/></a></p>
