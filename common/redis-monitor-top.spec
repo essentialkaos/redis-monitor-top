@@ -10,17 +10,17 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.3.1
+Version:         1.3.2
 Release:         0%{?dist}
 Group:           Applications/System
 License:         Apache License, Version 2.0
-URL:             https://github.com/essentialkaos/redis-monitor-top
+URL:             https://kaos.sh/redis-monitor-top
 
 Source0:         https://source.kaos.st/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.13
+BuildRequires:   golang >= 1.17
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -85,6 +85,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue Mar 29 2022 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
+- ek package updated to the latest stable version
+- Removed pkg.re usage
+- Added module info
+- Added Dependabot configuration
+
 * Thu Oct 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
 - ek package updated to the latest stable version
 
