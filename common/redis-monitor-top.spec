@@ -86,7 +86,7 @@ fi
 
 %changelog
 * Tue Mar 29 2022 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
-- ek package updated to the latest stable version
+- Package ek updated to the latest stable version
 - Removed pkg.re usage
 - Added module info
 - Added Dependabot configuration
