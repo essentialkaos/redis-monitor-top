@@ -36,7 +36,9 @@ Tiny Redis client for monitor command output top.
 
 %build
 export GOPATH=$(pwd)
-go build src/github.com/essentialkaos/%{name}/%{name}.go
+pushd src/github.com/essentialkaos/%{name}
+  go build -mod vendor -o $GOPATH/%{name} %{name}.go
+popd
 
 %install
 rm -rf %{buildroot}
