@@ -25,7 +25,6 @@ import (
 	"github.com/essentialkaos/ek/v12/fmtutil/table"
 	"github.com/essentialkaos/ek/v12/mathutil"
 	"github.com/essentialkaos/ek/v12/options"
-	"github.com/essentialkaos/ek/v12/strutil"
 	"github.com/essentialkaos/ek/v12/system/procname"
 	"github.com/essentialkaos/ek/v12/timeutil"
 	"github.com/essentialkaos/ek/v12/usage"
@@ -38,7 +37,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.3.2"
+	VER  = "1.3.3"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -134,9 +133,9 @@ func main() {
 
 	cmd := "MONITOR"
 
-	if len(args) != 0 && strings.ToUpper(args[0]) != cmd {
-		cmd = strutil.Copy(args[0])
-		maskCommand(args[0])
+	if len(args) != 0 && args.Get(0).ToUpper().String() != cmd {
+		cmd = args.Get(0).ToUpper().String()
+		maskCommand(args.Get(0).String())
 	}
 
 	start(cmd)
