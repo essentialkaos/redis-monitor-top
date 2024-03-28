@@ -6,8 +6,8 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.3.2
-Release:         1%{?dist}
+Version:         1.3.3
+Release:         0%{?dist}
 Group:           Applications/System
 License:         Apache License, Version 2.0
 URL:             https://kaos.sh/redis-monitor-top
@@ -16,7 +16,7 @@ Source0:         https://source.kaos.st/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.19
+BuildRequires:   golang >= 1.21
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -88,6 +88,11 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 28 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.3-0
+- Improved support information gathering
+- Code refactoring
+- Dependencies update
+
 * Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-1
 - Fixed build using sources from source.kaos.st
 
