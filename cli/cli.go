@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"os/exec"
 	"runtime"
 	"sort"
 	"strings"
@@ -22,6 +23,7 @@ import (
 	"github.com/essentialkaos/ek/v12/fmtutil/table"
 	"github.com/essentialkaos/ek/v12/mathutil"
 	"github.com/essentialkaos/ek/v12/options"
+	"github.com/essentialkaos/ek/v12/strutil"
 	"github.com/essentialkaos/ek/v12/support"
 	"github.com/essentialkaos/ek/v12/support/deps"
 	"github.com/essentialkaos/ek/v12/system/procname"
@@ -32,6 +34,7 @@ import (
 	"github.com/essentialkaos/ek/v12/usage/completion/fish"
 	"github.com/essentialkaos/ek/v12/usage/completion/zsh"
 	"github.com/essentialkaos/ek/v12/usage/man"
+	"github.com/essentialkaos/ek/v12/usage/update"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -101,7 +104,16 @@ var optMap = options.Map{
 	OPT_GENERATE_MAN: {Type: options.BOOL},
 }
 
+// colorTagApp contains color tag for app name
+var colorTagApp string
+
+// colorTagVer contains color tag for app version
+var colorTagVer string
+
+// conn is connection to Redis
 var conn net.Conn
+
+// stats contains commands stats
 var stats *Stats
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -137,6 +149,7 @@ func Run(gitRev string, gomod []byte) {
 		support.Collect(APP, VER).
 			WithRevision(gitRev).
 			WithDeps(deps.Extract(gomod)).
+			WithApps(getRedisVersionInfo()).
 			Print()
 		os.Exit(0)
 	case options.GetB(OPT_HELP), options.GetS(OPT_HOST) == "true":
@@ -158,6 +171,15 @@ func Run(gitRev string, gomod []byte) {
 func preConfigureUI() {
 	if !tty.IsTTY() {
 		fmtc.DisableColors = true
+	}
+
+	switch {
+	case fmtc.IsTrueColorSupported():
+		colorTagApp, colorTagVer = "{*}{#DC382C}", "{#A32422}"
+	case fmtc.Is256ColorsSupported():
+		colorTagApp, colorTagVer = "{*}{#160}", "{#124}"
+	default:
+		colorTagApp, colorTagVer = "{r*}", "{r}"
 	}
 }
 
@@ -398,6 +420,21 @@ func (s *Stats) Increment(command string) {
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
+// getRedisVersionInfo returns info about Redis version
+func getRedisVersionInfo() support.App {
+	cmd := exec.Command("redis-server", "--version")
+	output, err := cmd.Output()
+
+	if err != nil {
+		return support.App{"Redis", ""}
+	}
+
+	ver := strutil.ReadField(string(output), 2, false, ' ')
+	ver = strings.TrimLeft(ver, "v=")
+
+	return support.App{"Redis", ver}
+}
+
 // printCompletion prints completion for given shell
 func printCompletion() int {
 	info := genUsage()
@@ -430,6 +467,8 @@ func printMan() {
 func genUsage() *usage.Info {
 	info := usage.NewInfo("", "command")
 
+	info.AppNameColorTag = colorTagApp
+
 	info.AddOption(OPT_HOST, "Server hostname {s-}(127.0.0.1 by default){!}", "ip/host")
 	info.AddOption(OPT_PORT, "Server port {s-}(6379 by default){!}", "port")
 	info.AddOption(OPT_AUTH, "Password to use when connecting to the server", "password")
@@ -461,10 +500,18 @@ func genAbout(gitRev string) *usage.About {
 		Year:    2006,
 		Owner:   "ESSENTIAL KAOS",
 		License: "Apache License, Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>",
+
+		AppNameColorTag: colorTagApp,
+		VersionColorTag: colorTagVer,
+		DescSeparator:   "{s}—{!}",
 	}
 
 	if gitRev != "" {
 		about.Build = "git:" + gitRev
+		about.UpdateChecker = usage.UpdateChecker{
+			"essentialkaos/redis-monitor-top",
+			update.GitHubChecker,
+		}
 	}
 
 	return about
