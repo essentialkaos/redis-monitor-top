@@ -47,29 +47,7 @@ bash <(curl -fsSL https://apps.kaos.st/get) redis-monitor-top
 
 ### Usage
 
-```
-Usage: redis-monitor-top {options} command
-
-Options
-
-  --host, -h ip/host         Server hostname (127.0.0.1 by default)
-  --port, -p port            Server port (6379 by default)
-  --password, -a password    Password to use when connecting to the server
-  --timeout, -t 1-300        Connection timeout in seconds (3 by default)
-  --interval, -i 1-3600      Interval in seconds (60 by default)
-  --no-color, -nc            Disable colors in output
-  --help                     Show this help message
-  --version, -v              Show version
-
-Examples
-
-  redis-monitor-top -h 192.168.0.123 -p 6821 -t 15 MONITOR
-  Start monitoring instance on 192.168.0.123:6821 with 15 second timeout
-
-  redis-monitor-top -h 192.168.0.123 -p 6821 -i 30 MY_MONITOR
-  Start monitoring instance on 192.168.0.123:6821 with 30 second interval and renamed MONITOR command
-
-```
+<img src=".github/images/usage.svg" />
 
 ### Build Status
 
