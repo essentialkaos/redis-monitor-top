@@ -6,7 +6,7 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.3.3
+Version:         1.3.4
 Release:         0%{?dist}
 Group:           Applications/System
 License:         Apache License, Version 2.0
@@ -91,7 +91,7 @@ fi
 ################################################################################
 
 %changelog
-* Sun Jun 23 2024 Anton Novojilov <andy@essentialkaos.com> - 1.34-0
+* Sun Jun 23 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
 - Code refactoring
 - Dependencies update
 
