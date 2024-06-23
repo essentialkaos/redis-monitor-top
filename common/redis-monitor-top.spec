@@ -6,7 +6,7 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.3.3
+Version:         1.3.4
 Release:         0%{?dist}
 Group:           Applications/System
 License:         Apache License, Version 2.0
@@ -28,14 +28,17 @@ Tiny Redis client for monitor command output top.
 ################################################################################
 
 %prep
-%setup -q
 
-%build
+%setup -q
 if [[ ! -d "%{name}/vendor" ]] ; then
-  echo "This package requires vendored dependencies"
+  echo -e "----\nThis package requires vendored dependencies\n----"
+  exit 1
+elif [[ -f "%{name}/%{name}" ]] ; then
+  echo -e "----\nSources must not contain precompiled binaries\n----"
   exit 1
 fi
 
+%build
 pushd %{name}
   go build %{name}.go
   cp LICENSE ..
@@ -88,6 +91,10 @@ fi
 ################################################################################
 
 %changelog
+* Sun Jun 23 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
+- Code refactoring
+- Dependencies update
+
 * Thu Mar 28 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.3-0
 - Improved support information gathering
 - Code refactoring

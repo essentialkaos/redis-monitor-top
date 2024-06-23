@@ -1,14 +1,14 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/redis-monitor-top.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/></a></p>
 
 <p align="center">
   <a href="https://kaos.sh/w/redis-monitor-top/ci"><img src="https://kaos.sh/w/redis-monitor-top/ci.svg" alt="GitHub Actions CI Status" /></a>
   <a href="https://kaos.sh/r/redis-monitor-top"><img src="https://kaos.sh/r/redis-monitor-top.svg" alt="GoReportCard" /></a>
   <a href="https://kaos.sh/b/redis-monitor-top"><img src="https://kaos.sh/b/98c9f6ab-999c-498c-980f-44859b18aae7.svg" alt="codebeat badge" /></a>
   <a href="https://kaos.sh/w/redis-monitor-top/codeql"><img src="https://kaos.sh/w/redis-monitor-top/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
-  <a href="#license"><img src="https://gh.kaos.st/apache2.svg"></a>
+  <a href="#license"><img src=".github/images/license.svg"/></a>
 </p>
 
-<p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#build-status">Build Status</a> • <a href="#license">License</a></p>
+<p align="center"><a href="#usage-demo">Usage demo</a> • <a href="#installation">Installation</a> • <a href="#usage">Usage</a> • <a href="#ci-status">CI Status</a> • <a href="#license">License</a></p>
 
 <br/>
 
@@ -22,16 +22,16 @@ Tiny Redis client for aggregating stats from MONITOR flow.
 
 #### From source
 
-To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.19+ workspace (_[instructions](https://go.dev/doc/install)_), then:
+To build the `redis-monitor-top` from scratch, make sure you have a working Go 1.21+ workspace (_[instructions](https://go.dev/doc/install)_), then:
 
 ```
 go install github.com/essentialkaos/redis-monitor-top@latest
 ```
 
-#### From [ESSENTIAL KAOS Public Repository](https://yum.kaos.st)
+#### From [ESSENTIAL KAOS Public Repository](https://kaos.sh/kaos-repo)
 
 ```bash
-sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 sudo yum install redis-monitor-top
 ```
 
@@ -47,31 +47,9 @@ bash <(curl -fsSL https://apps.kaos.st/get) redis-monitor-top
 
 ### Usage
 
-```
-Usage: redis-monitor-top {options} command
+<img src=".github/images/usage.svg" />
 
-Options
-
-  --host, -h ip/host         Server hostname (127.0.0.1 by default)
-  --port, -p port            Server port (6379 by default)
-  --password, -a password    Password to use when connecting to the server
-  --timeout, -t 1-300        Connection timeout in seconds (3 by default)
-  --interval, -i 1-3600      Interval in seconds (60 by default)
-  --no-color, -nc            Disable colors in output
-  --help                     Show this help message
-  --version, -v              Show version
-
-Examples
-
-  redis-monitor-top -h 192.168.0.123 -p 6821 -t 15 MONITOR
-  Start monitoring instance on 192.168.0.123:6821 with 15 second timeout
-
-  redis-monitor-top -h 192.168.0.123 -p 6821 -i 30 MY_MONITOR
-  Start monitoring instance on 192.168.0.123:6821 with 30 second interval and renamed MONITOR command
-
-```
-
-### Build Status
+### CI Status
 
 | Branch | Status |
 |--------|--------|
