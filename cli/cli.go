@@ -27,6 +27,7 @@ import (
 	"github.com/essentialkaos/ek/v12/support"
 	"github.com/essentialkaos/ek/v12/support/deps"
 	"github.com/essentialkaos/ek/v12/system/procname"
+	"github.com/essentialkaos/ek/v12/terminal"
 	"github.com/essentialkaos/ek/v12/terminal/tty"
 	"github.com/essentialkaos/ek/v12/timeutil"
 	"github.com/essentialkaos/ek/v12/usage"
@@ -41,7 +42,7 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.3.3"
+	VER  = "1.3.4"
 	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
 )
 
@@ -126,11 +127,9 @@ func Run(gitRev string, gomod []byte) {
 
 	args, errs := options.Parse(optMap)
 
-	if len(errs) != 0 {
-		for _, err := range errs {
-			printError(err.Error())
-		}
-
+	if !errs.IsEmpty() {
+		terminal.Error("Options parsing errors:")
+		terminal.Error(errs.String())
 		os.Exit(1)
 	}
 
@@ -364,13 +363,8 @@ func formatFloat(f float64) float64 {
 
 // printErrorAndExit print error message and exit from utility
 func printErrorAndExit(f string, a ...interface{}) {
-	printError(f, a...)
+	terminal.Error(f, a...)
 	shutdown(1)
-}
-
-// printError prints error message to console
-func printError(f string, a ...interface{}) {
-	fmtc.Fprintf(os.Stderr, "{r}"+f+"{!}\n", a...)
 }
 
 // shutdown close connection to Redis and exit from utility
@@ -455,12 +449,7 @@ func printCompletion() int {
 
 // printMan prints man page
 func printMan() {
-	fmt.Println(
-		man.Generate(
-			genUsage(),
-			genAbout(""),
-		),
-	)
+	fmt.Println(man.Generate(genUsage(), genAbout("")))
 }
 
 // genUsage generates usage info
