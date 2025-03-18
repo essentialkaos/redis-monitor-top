@@ -1,9 +1,9 @@
 module github.com/essentialkaos/redis-monitor-top
 
 go 1.22.8
-toolchain go1.23.7
+toolchain go1.24.1
 
-require github.com/essentialkaos/ek/v13 v13.20.3
+require github.com/essentialkaos/ek/v13 v13.20.4
 
 require (
 	github.com/essentialkaos/depsy v1.3.1 // indirect
