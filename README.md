@@ -11,7 +11,7 @@
 
 <br/>
 
-Tiny Redis client for aggregating stats from MONITOR flow.
+Tiny Valkey/Redis client for aggregating stats from MONITOR flow.
 
 ### Usage demo
 
