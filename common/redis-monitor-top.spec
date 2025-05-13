@@ -94,6 +94,7 @@ fi
 %changelog
 * Tue May 13 2025 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - Improved Valkey support
+- Minor UI improvements
 - Code refactoring
 - Dependencies update
 
