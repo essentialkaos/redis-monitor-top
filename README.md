@@ -15,7 +15,7 @@ Tiny Redis client for aggregating stats from MONITOR flow.
 
 ### Usage demo
 
-[![demo](https://gh.kaos.st/redis-monitor-top-100.gif)](#usage-demo)
+[![demo](https://github.com/user-attachments/assets/d950d832-1a52-40de-b5cc-92e389812062)](#usage-demo)
 
 ### Installation
 
