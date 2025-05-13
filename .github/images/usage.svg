@@ -55,7 +55,7 @@
 
   <text x="50%" y="24" text-anchor="middle"><tspan class="terminal">Terminal</tspan></text>
 
-  <text x="12" y="60"><tspan class="BB">Usage:</tspan> <tspan class="BB" fill="#DC382C">redis-monitor-top</tspan> <tspan class="g">{options}</tspan> <tspan class="s">command</tspan></text>
+  <text x="12" y="60"><tspan class="BB">Usage:</tspan> <tspan class="BB" fill="#DC382C">redis-monitor-top</tspan> <tspan class="g">{options}</tspan> <tspan class="d">command</tspan></text>
   <text x="12" y="100"><tspan class="BB">Options</tspan></text>
   <text x="12" y="140">  <tspan class="g">--host</tspan><tspan class="s">, </tspan><tspan class="g">-h</tspan> <tspan class="s">ip/host</tspan> <tspan class="d">.....</tspan> Server hostname <tspan class="d">(127.0.0.1 by default)</tspan></text>
   <text x="12" y="160">  <tspan class="g">--port</tspan><tspan class="s">, </tspan><tspan class="g">-p</tspan> <tspan class="s">port</tspan> <tspan class="d">........</tspan> Server port <tspan class="d">(6379 by default)</tspan></text>

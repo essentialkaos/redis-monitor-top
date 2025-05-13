@@ -23,6 +23,7 @@ import (
 	"github.com/essentialkaos/ek/v13/fmtutil/table"
 	"github.com/essentialkaos/ek/v13/mathutil"
 	"github.com/essentialkaos/ek/v13/options"
+	"github.com/essentialkaos/ek/v13/strutil"
 	"github.com/essentialkaos/ek/v13/support"
 	"github.com/essentialkaos/ek/v13/support/apps"
 	"github.com/essentialkaos/ek/v13/support/deps"
@@ -73,6 +74,7 @@ type CommandInfo struct {
 	Count int64
 }
 
+// Stats contains command stats data
 type Stats struct {
 	Data  map[string]*CommandInfo
 	Slice []*CommandInfo
@@ -271,10 +273,10 @@ func printStats() {
 	interval := time.Second * time.Duration(options.GetI(OPT_INTERVAL))
 
 	t := table.NewTable("DATE & TIME", "COUNT", "RPS", "COMMAND").
-		SetSizes(20, 10, 10).
+		SetSizes(19, 10, 10).
 		SetAlignments(table.ALIGN_RIGHT, table.ALIGN_RIGHT, table.ALIGN_RIGHT)
 
-	t.Width = 80
+	t.Width = 88
 
 	for range time.NewTicker(time.Millisecond * 250).C {
 		if time.Since(last) >= interval {
@@ -290,7 +292,7 @@ func renderStats(t *table.Table) {
 
 	if !stats.HasData || stats.Dirty {
 		t.Print(
-			timeutil.Format(now, "%Y/%m/%d %H:%M:%S"),
+			"{s-}"+timeutil.Format(now, "%Y/%m/%d %H:%M:%S")+"{!}",
 			"{s-}----------{!}",
 			"{s-}----------{!}",
 			"{s-}----------{!}",
@@ -312,17 +314,17 @@ func renderStats(t *table.Table) {
 
 		if i == 0 {
 			t.Print(
-				timeutil.Format(now, "%Y/%m/%d %H:%M:%S"),
+				timeutil.Format(now, "{s}%Y/%m/%d %H:%M:%S{!}"),
 				fmtutil.PrettyNum(info.Count),
 				fmtutil.PrettyNum(formatFloat(float64(info.Count)/interval)),
-				strings.ToUpper(info.Name),
+				strutil.Q(strings.ToUpper(info.Name), "{s}—{!}"),
 			)
 		} else {
 			t.Print(
 				" ",
 				fmtutil.PrettyNum(info.Count),
 				fmtutil.PrettyNum(formatFloat(float64(info.Count)/interval)),
-				strings.ToUpper(info.Name),
+				strutil.Q(strings.ToUpper(info.Name), "{s}—{!}"),
 			)
 		}
 
@@ -406,14 +408,22 @@ func (s *Stats) Increment(command string) {
 
 // getServerVersionInfo returns info about server version
 func getServerVersionInfo() support.App {
+	var info support.App
+
 	switch {
 	case hasApp("valkey-server"):
-		return apps.ExtractVersion("valkey-server --version", 0, 1)
+		info = apps.ExtractVersion("valkey-server --version", 0, 1)
+		info.Name = "Valkey"
 	case hasApp("redis-server"):
-		return apps.ExtractVersion("redis-server --version", 0, 2)
+		info = apps.ExtractVersion("redis-server --version", 0, 2)
+		info.Name = "Redis"
 	default:
 		return support.App{}
 	}
+
+	info.Version = strings.TrimLeft(info.Version, "v=")
+
+	return info
 }
 
 // printCompletion prints completion for given shell
@@ -447,7 +457,7 @@ func printMan() {
 
 // genUsage generates usage info
 func genUsage() *usage.Info {
-	info := usage.NewInfo("", "command")
+	info := usage.NewInfo("", "?command")
 
 	info.AppNameColorTag = colorTagApp
 
