@@ -6,7 +6,7 @@
 
 Summary:         Tiny Redis client for monitor command output top
 Name:            redis-monitor-top
-Version:         1.3.4
+Version:         1.4.0
 Release:         0%{?dist}
 Group:           Applications/System
 License:         Apache License, Version 2.0
@@ -16,14 +16,15 @@ Source0:         https://source.kaos.st/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.21
+BuildRequires:   golang >= 1.23
 
 Provides:        %{name} = %{version}-%{release}
+Provides:        valkey-monitor-top = %{version}-%{release}
 
 ################################################################################
 
 %description
-Tiny Redis client for monitor command output top.
+Tiny Valkey/Redis client for monitor command output top.
 
 ################################################################################
 
@@ -91,6 +92,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue May 13 2025 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Improved Valkey support
+- Minor UI improvements
+- Code refactoring
+- Dependencies update
+
 * Sun Jun 23 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
 - Code refactoring
 - Dependencies update
