@@ -233,10 +233,10 @@ func connectToServer(host string, timeout time.Duration) error {
 
 // processCommands sends monitor command to server and processes command flow
 func processCommands(cmd string) error {
-	connbuf := bufio.NewReader(conn)
-	conn.Write([]byte(cmd + "\n"))
-
 	stats = NewStats()
+
+	connbuf := bufio.NewReader(conn)
+	fmt.Fprintf(conn, "%s\n", cmd)
 
 	go printStats()
 
