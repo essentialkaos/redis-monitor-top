@@ -23,8 +23,8 @@ import (
 	"github.com/essentialkaos/ek/v13/fmtutil/table"
 	"github.com/essentialkaos/ek/v13/mathutil"
 	"github.com/essentialkaos/ek/v13/options"
-	"github.com/essentialkaos/ek/v13/strutil"
 	"github.com/essentialkaos/ek/v13/support"
+	"github.com/essentialkaos/ek/v13/support/apps"
 	"github.com/essentialkaos/ek/v13/support/deps"
 	"github.com/essentialkaos/ek/v13/system/procname"
 	"github.com/essentialkaos/ek/v13/terminal"
@@ -42,8 +42,8 @@ import (
 
 const (
 	APP  = "Redis Monitor Top"
-	VER  = "1.3.4"
-	DESC = "Tiny Redis client for aggregating stats from MONITOR flow"
+	VER  = "1.4.0"
+	DESC = "Tiny Valkey/Redis client for aggregating stats from MONITOR flow"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -51,7 +51,7 @@ const (
 const (
 	OPT_HOST     = "h:host"
 	OPT_PORT     = "p:port"
-	OPT_AUTH     = "a:password"
+	OPT_AUTH     = "a:auth"
 	OPT_TIMEOUT  = "t:timeout"
 	OPT_INTERVAL = "i:interval"
 	OPT_NO_COLOR = "nc:no-color"
@@ -73,15 +73,9 @@ type CommandInfo struct {
 	Count int64
 }
 
-type CommandInfoSlice []*CommandInfo
-
-func (s CommandInfoSlice) Len() int           { return len(s) }
-func (s CommandInfoSlice) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
-func (s CommandInfoSlice) Less(i, j int) bool { return s[i].Count < s[j].Count }
-
 type Stats struct {
 	Data  map[string]*CommandInfo
-	Slice CommandInfoSlice
+	Slice []*CommandInfo
 
 	Dirty   bool
 	HasData bool
@@ -111,7 +105,7 @@ var colorTagApp string
 // colorTagVer contains color tag for app version
 var colorTagVer string
 
-// conn is connection to Redis
+// conn is connection to server
 var conn net.Conn
 
 // stats contains commands stats
@@ -129,7 +123,7 @@ func Run(gitRev string, gomod []byte) {
 
 	if !errs.IsEmpty() {
 		terminal.Error("Options parsing errors:")
-		terminal.Error(errs.Error("- "))
+		terminal.Error(errs.Error(" - "))
 		os.Exit(1)
 	}
 
@@ -148,7 +142,7 @@ func Run(gitRev string, gomod []byte) {
 		support.Collect(APP, VER).
 			WithRevision(gitRev).
 			WithDeps(deps.Extract(gomod)).
-			WithApps(getRedisVersionInfo()).
+			WithApps(getServerVersionInfo()).
 			Print()
 		os.Exit(0)
 	case options.GetB(OPT_HELP), options.GetS(OPT_HOST) == "true":
@@ -163,7 +157,12 @@ func Run(gitRev string, gomod []byte) {
 		maskCommand(args.Get(0).String())
 	}
 
-	start(cmd)
+	err := monitor(cmd)
+
+	if err != nil {
+		terminal.Error(err)
+		os.Exit(1)
+	}
 }
 
 // preConfigureUI preconfigures UI based on information about user terminal
@@ -189,50 +188,51 @@ func configureUI() {
 	}
 }
 
-// maskCommand mask command in process tree
+// maskCommand masks command in process tree
 func maskCommand(cmd string) {
 	cmdLen := mathutil.Max(len(cmd), 16)
 	procname.Replace(cmd, strings.Repeat("*", cmdLen))
 }
 
-// start connects to Redis and starts monitor flow processing
-func start(cmd string) {
-	err := connectToRedis(
-		options.GetS(OPT_HOST),
-		options.GetS(OPT_PORT),
+// monitor connects to server and starts monitor flow processing
+func monitor(cmd string) error {
+	err := connectToServer(
+		options.GetS(OPT_HOST)+":"+options.GetS(OPT_PORT),
 		time.Second*time.Duration(options.GetI(OPT_TIMEOUT)),
 	)
-
-	if err != nil {
-		printErrorAndExit(err.Error())
-	}
-
-	processCommands(cmd)
-}
-
-// connectToRedis connects to Redis instance
-func connectToRedis(host, port string, timeout time.Duration) error {
-	var err error
-
-	conn, err = net.DialTimeout("tcp", host+":"+port, timeout)
 
 	if err != nil {
 		return err
 	}
 
+	processCommands(cmd)
+
+	return nil
+}
+
+// connectToServer connects to server instance
+func connectToServer(host string, timeout time.Duration) error {
+	var err error
+
+	conn, err = net.DialTimeout("tcp", host, timeout)
+
+	if err != nil {
+		return fmt.Errorf("Can't connect to server on %s: %w", host, err)
+	}
+
 	if options.GetS(OPT_AUTH) != "" {
-		_, err = conn.Write([]byte("AUTH " + options.GetS(OPT_AUTH) + "\n"))
+		_, err = fmt.Fprintf(conn, "AUTH %s\r\n", options.GetS(OPT_AUTH))
 
 		if err != nil {
-			return err
+			return fmt.Errorf("Can't send AUTH command: %w", err)
 		}
 	}
 
 	return nil
 }
 
-// processCommands sends monitor command to Redis and processes command flow
-func processCommands(cmd string) {
+// processCommands sends monitor command to server and processes command flow
+func processCommands(cmd string) error {
 	connbuf := bufio.NewReader(conn)
 	conn.Write([]byte(cmd + "\n"))
 
@@ -249,18 +249,18 @@ func processCommands(cmd string) {
 			}
 
 			if strings.HasPrefix(str, "-ERR ") {
-				printErrorAndExit("Redis return error message: " + strings.TrimRight(str[1:], "\r\n"))
+				return fmt.Errorf("Server returned error message: " + strings.TrimRight(str[1:], "\r\n"))
 			}
 
 			if stats.Dirty {
-				stats.Clean()
+				stats.Reset()
 			}
 
 			stats.Increment(extractCommandName(str))
 		}
 
 		if err != nil {
-			printErrorAndExit(err.Error())
+			return err
 		}
 	}
 }
@@ -269,9 +269,12 @@ func processCommands(cmd string) {
 func printStats() {
 	last := time.Now()
 	interval := time.Second * time.Duration(options.GetI(OPT_INTERVAL))
-	t := table.NewTable("DATE & TIME", "COUNT", "RPS", "COMMAND")
-	t.SetSizes(20, 10, 10)
-	t.SetAlignments(table.ALIGN_RIGHT, table.ALIGN_RIGHT, table.ALIGN_RIGHT)
+
+	t := table.NewTable("DATE & TIME", "COUNT", "RPS", "COMMAND").
+		SetSizes(20, 10, 10).
+		SetAlignments(table.ALIGN_RIGHT, table.ALIGN_RIGHT, table.ALIGN_RIGHT)
+
+	t.Width = 80
 
 	for range time.NewTicker(time.Millisecond * 250).C {
 		if time.Since(last) >= interval {
@@ -296,7 +299,9 @@ func renderStats(t *table.Table) {
 		return
 	}
 
-	sort.Sort(sort.Reverse(stats.Slice))
+	sort.Slice(stats.Slice, func(i, j int) bool {
+		return stats.Slice[i].Count > stats.Slice[j].Count
+	})
 
 	interval := float64(options.GetI(OPT_INTERVAL))
 
@@ -361,24 +366,9 @@ func formatFloat(f float64) float64 {
 	return f
 }
 
-// printErrorAndExit print error message and exit from utility
-func printErrorAndExit(f string, a ...interface{}) {
-	terminal.Error(f, a...)
-	shutdown(1)
-}
-
-// shutdown close connection to Redis and exit from utility
-func shutdown(code int) {
-	if conn != nil {
-		conn.Close()
-	}
-
-	os.Exit(code)
-}
-
 // ////////////////////////////////////////////////////////////////////////////////// //
 
-// NewStats create new stats struct
+// NewStats creates new stats struct
 func NewStats() *Stats {
 	return &Stats{
 		Data:  make(map[string]*CommandInfo),
@@ -386,8 +376,8 @@ func NewStats() *Stats {
 	}
 }
 
-// Clean clean stats
-func (s *Stats) Clean() {
+// Reset cleans stats data
+func (s *Stats) Reset() {
 	if !s.Dirty {
 		return
 	}
@@ -400,7 +390,7 @@ func (s *Stats) Clean() {
 	s.Dirty = false
 }
 
-// Increment increment counter for given command
+// Increment increments counter for given command
 func (s *Stats) Increment(command string) {
 	if s.Data[command] == nil {
 		info := &CommandInfo{command, 0}
@@ -414,19 +404,16 @@ func (s *Stats) Increment(command string) {
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
-// getRedisVersionInfo returns info about Redis version
-func getRedisVersionInfo() support.App {
-	cmd := exec.Command("redis-server", "--version")
-	output, err := cmd.Output()
-
-	if err != nil {
-		return support.App{"Redis", ""}
+// getServerVersionInfo returns info about server version
+func getServerVersionInfo() support.App {
+	switch {
+	case hasApp("valkey-server"):
+		return apps.ExtractVersion("valkey-server --version", 0, 1)
+	case hasApp("redis-server"):
+		return apps.ExtractVersion("redis-server --version", 0, 2)
+	default:
+		return support.App{}
 	}
-
-	ver := strutil.ReadField(string(output), 2, false, ' ')
-	ver = strings.TrimLeft(ver, "v=")
-
-	return support.App{"Redis", ver}
 }
 
 // printCompletion prints completion for given shell
@@ -445,6 +432,12 @@ func printCompletion() int {
 	}
 
 	return 0
+}
+
+// hasApp returns true if given app is installed on the system
+func hasApp(name string) bool {
+	_, err := exec.LookPath(name)
+	return err == nil
 }
 
 // printMan prints man page
