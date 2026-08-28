@@ -2,7 +2,6 @@
 
 <p align="center">
   <a href="https://kaos.sh/w/redis-monitor-top/ci"><img src="https://kaos.sh/w/redis-monitor-top/ci.svg" alt="GitHub Actions CI Status" /></a>
-  <a href="https://kaos.sh/r/redis-monitor-top"><img src="https://kaos.sh/r/redis-monitor-top.svg" alt="GoReportCard" /></a>
   <a href="https://kaos.sh/w/redis-monitor-top/codeql"><img src="https://kaos.sh/w/redis-monitor-top/codeql.svg" alt="GitHub Actions CodeQL Status" /></a>
   <a href="#license"><img src=".github/images/license.svg"/></a>
 </p>
